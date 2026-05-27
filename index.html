@@ -192,9 +192,8 @@
 
     .meta .tag {
       display: flex;
+      flex-direction: column;
       align-items: flex-end;
-      gap: 22px;
-      justify-content: flex-end;
       font-family: 'Roboto Slab', serif;
       font-size: clamp(44px, 5vw, 68px);
       line-height: 1.1;
@@ -638,12 +637,12 @@
       50% { opacity: 0; }
     }
 
-    .tag.typing::after {
-      content: '|';
+    .meta .tag .cursor {
       display: inline-block;
-      margin-left: 2px;
-      animation: blink-caret 0.6s step-end infinite;
+      margin-left: 1px;
       font-weight: 300;
+      color: var(--accent); /* 下划线使用品牌橘色，极其 premium */
+      animation: blink-caret 0.65s step-end infinite;
     }
 
     /* ---------- Responsive ---------- */
@@ -953,34 +952,66 @@
       c.addEventListener('click', (e) => e.preventDefault());
     });
 
-    // Typewriter effect for tagline
+    // Typewriter effect for tagline (Non-shifting dynamic visibility placeholder)
     (() => {
       const tagEl = document.querySelector('.meta .tag');
       if (!tagEl) return;
-      const lines = ['Shipping experiments', 'at midnight.'];
-      const full = lines.join('\n');
-      // Clear content and mark as typing
-      tagEl.innerHTML = '';
-      tagEl.classList.add('typing');
-      let i = 0;
-      const speed = 45; // ms per character — snappy
-      function type() {
-        if (i < full.length) {
-          const ch = full[i];
-          if (ch === '\n') {
-            tagEl.innerHTML += '<br>';
-          } else {
-            tagEl.append(ch);
-          }
-          i++;
-          setTimeout(type, speed);
+
+      const line1Text = "Shipping experiments";
+      const line2Text = "at midnight.";
+
+      // 静态双行排版占位，防止打字时页面抖动
+      tagEl.innerHTML = `
+        <div class="line" style="text-align: right; display: block; min-height: 1.2em; width: 100%;">
+          <span class="visible"></span><span class="cursor"></span><span class="hidden" style="visibility: hidden;">${line1Text}</span>
+        </div>
+        <div class="line" style="text-align: right; display: block; min-height: 1.2em; width: 100%;">
+          <span class="visible"></span><span class="cursor"></span><span class="hidden" style="visibility: hidden;">${line2Text}</span>
+        </div>
+      `;
+
+      const lines = tagEl.querySelectorAll('.line');
+      const l1Visible = lines[0].querySelector('.visible');
+      const l1Cursor = lines[0].querySelector('.cursor');
+      const l1Hidden = lines[0].querySelector('.hidden');
+
+      const l2Visible = lines[1].querySelector('.visible');
+      const l2Cursor = lines[1].querySelector('.cursor');
+      const l2Hidden = lines[1].querySelector('.hidden');
+
+      let index = 0;
+      const speed = 40; //Snappy & dynamic
+
+      // 第一行光标初始化为终端下划线
+      l1Cursor.textContent = '_';
+
+      function typeLine1() {
+        if (index < line1Text.length) {
+          l1Visible.textContent += line1Text[index];
+          l1Hidden.textContent = line1Text.substring(index + 1);
+          index++;
+          setTimeout(typeLine1, speed);
         } else {
-          // Done — remove cursor after a short pause
-          setTimeout(() => tagEl.classList.remove('typing'), 800);
+          // 第一行打完，光标无缝转移到第二行开头
+          l1Cursor.textContent = '';
+          index = 0;
+          l2Cursor.textContent = '_';
+          setTimeout(typeLine2, speed);
         }
       }
-      // Small initial delay so page settles first
-      setTimeout(type, 600);
+
+      function typeLine2() {
+        if (index < line2Text.length) {
+          l2Visible.textContent += line2Text[index];
+          l2Hidden.textContent = line2Text.substring(index + 1);
+          index++;
+          setTimeout(typeLine2, speed);
+        }
+        // 打完后光标不消失，停留在末尾永远闪烁！
+      }
+
+      // 等待首屏渲染完毕后以极具动感的节奏开启打字
+      setTimeout(typeLine1, 600);
     })();
   </script>
 
