@@ -639,25 +639,28 @@
         grid-template-columns: 1fr auto;
       }
 
+      .brand .l2 {
+        display: none; /* 移动端只保留 Lyra，不显示 Solo Builder 后缀以防止和右侧按钮重叠 */
+      }
+
       .socials {
         display: none;
       }
 
       .hero .meta {
         right: 24px;
-        bottom: 40px;
-        /* 移动端也往下挪 */
+        bottom: 40px; /* 移动端也往下挪 */
         max-width: 90vw;
       }
 
       .hero .bigname {
         left: 24px;
-        font-size: 48px;
+        font-size: clamp(36px, 8vw, 48px); /* 自动弹性适配各种宽度的设备 */
       }
 
       .meta .role,
       .meta .tag {
-        font-size: 36px;
+        font-size: clamp(20px, 6.5vw, 32px); /* 流体字号，防止极窄屏重叠 */
       }
 
       .meta .tag .blob {
@@ -671,12 +674,11 @@
       }
 
       .scroll-down {
-        width: 38px;
-        /* 移动端自适应精致缩小 */
+        width: 38px; /* 移动端自适应精致缩小 */
         height: 38px;
         margin-left: 8px;
       }
-
+      
       .scroll-down svg {
         width: 14px;
         height: 14px;
@@ -692,7 +694,50 @@
       .cards>*:nth-child(3) {
         transform: rotate(var(--rot, -3deg));
       }
+
+      /* 移动端卡片宽度自适应防止溢出 */
+      .polaroid {
+        width: 100%;
+        max-width: 260px;
+      }
+
+      .ticket {
+        width: 100%;
+        max-width: 340px;
+      }
+
+      .sticky {
+        width: 100%;
+        max-width: 290px;
+      }
+
+      /* 移动端 About 弹窗适配，保证小屏完整展现 */
+      .modal-backdrop {
+        padding: 16px;
+      }
+
+      .modal {
+        padding: 32px 24px;
+        border-radius: 14px;
+      }
+
+      .modal h3 {
+        font-size: 28px;
+        margin-bottom: 14px;
+      }
+
+      .modal p {
+        font-size: 12px;
+        line-height: 1.6;
+        margin-bottom: 12px;
+      }
+
+      .modal .contact {
+        margin-top: 20px;
+        gap: 8px;
+      }
     }
+    
   </style>
 </head>
 
