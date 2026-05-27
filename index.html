@@ -648,6 +648,11 @@
       font-weight: 300;
       color: var(--accent);
       animation: blink-caret 0.65s step-end infinite;
+      transition: right 0.25s ease-out; /* 让光标归位时带有优雅的平滑过渡效果！ */
+    }
+
+    .meta .tag .cursor.finished {
+      right: -64px; /* 桌面端精准对齐滚动箭头 */
     }
 
     /* ---------- Responsive ---------- */
@@ -750,6 +755,14 @@
       .scroll-down svg {
         width: 14px;
         height: 14px;
+      }
+
+      .meta .tag {
+        padding-right: 46px; /* 移动端箭头缩小为 38px + 8px 间距，文字对齐 X */
+      }
+
+      .meta .tag .cursor.finished {
+        right: -46px; /* 移动端光标对齐微缩箭头 */
       }
 
       .cards {
@@ -1048,8 +1061,10 @@
           l2Hidden.textContent = line2Text.substring(index + 1);
           index++;
           setTimeout(typeLine2, speed);
+        } else {
+          // 打完后光标停留在末尾永远闪烁，并优雅平滑地向右贴齐滚动箭头！
+          l2Cursor.classList.add('finished');
         }
-        // 打完后光标停留在末尾永远闪烁
       }
 
       setTimeout(typeLine1, 600);
