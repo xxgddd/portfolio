@@ -641,17 +641,20 @@
 
     .meta .tag .visible {
       position: relative;
+      display: inline-block; /* 保证在移动端 Safari/Chrome 下绝对定位锚点绝对稳定，不飞出 */
     }
 
     .meta .tag .cursor {
       position: absolute;
+      left: 100%; /* 打字过程中光标 100% 贴在最右端 */
       font-weight: 300;
       color: var(--accent);
       animation: blink-caret 0.65s step-end infinite;
-      transition: right 0.25s ease-out; /* 让光标归位时带有优雅的平滑过渡效果！ */
+      transition: left 0.1s ease-out, right 0.25s ease-out; /* 顺滑过渡 */
     }
 
     .meta .tag .cursor.finished {
+      left: auto; /* 重置 left */
       right: -64px; /* 桌面端精准对齐滚动箭头 */
     }
 
@@ -757,11 +760,16 @@
         height: 14px;
       }
 
+      .meta .role {
+        margin-bottom: 8px; /* 缩短两行字之间的间距，让 shipping 完美往上提！ */
+      }
+
       .meta .tag {
         padding-right: 46px; /* 移动端箭头缩小为 38px + 8px 间距，文字对齐 X */
       }
 
       .meta .tag .cursor.finished {
+        left: auto; /* 重置 left */
         right: -46px; /* 移动端光标对齐微缩箭头 */
       }
 
