@@ -640,8 +640,7 @@
     }
 
     .meta .tag .cursor {
-      position: absolute;
-      right: -64px; /* 与圆圈滚动箭头对齐 */
+      display: inline;
       font-weight: 300;
       color: var(--accent);
       animation: blink-caret 0.65s step-end infinite;
@@ -828,7 +827,7 @@
       <div class="tag">
         <span>
           <span class="line">Shipping experiments</span>
-          <span class="line">at midnight.</span>
+          <span class="line">at midnight</span>
         </span>
       </div>
     </div>
@@ -960,7 +959,7 @@
       if (!tagEl) return;
 
       const line1Text = "Shipping experiments";
-      const line2Text = "at midnight.";
+      const line2Text = "at midnight";
 
       // 静态双行排版占位，防止打字时页面抖动
       tagEl.innerHTML = `
