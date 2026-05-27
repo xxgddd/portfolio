@@ -647,15 +647,26 @@
         display: none;
       }
 
-      .hero .meta {
-        right: 24px;
-        bottom: 40px; /* 移动端也往下挪 */
-        max-width: 90vw;
+      .hero {
+        min-height: calc(100vh - 60px); /* 兼容性兜底 */
+        min-height: calc(100dvh - 40px); /* 动态视口高度，精准适配移动端浏览器，彻底防止底部截断 */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 96px 24px 28px;
+        box-sizing: border-box;
       }
 
       .hero .bigname {
-        left: 24px;
-        font-size: clamp(36px, 8vw, 48px); /* 自动弹性适配各种宽度的设备 */
+        position: static; /* 重置绝对定位，改为自适应流式排版 */
+        font-size: clamp(34px, 8vw, 48px);
+        margin: 0;
+      }
+
+      .hero .meta {
+        position: static; /* 重置绝对定位 */
+        max-width: 100%;
+        margin-top: auto; /* 自动推至底部 */
       }
 
       .meta .role,
