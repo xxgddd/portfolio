@@ -639,8 +639,12 @@
       50% { opacity: 0; }
     }
 
+    .meta .tag .visible {
+      position: relative;
+    }
+
     .meta .tag .cursor {
-      display: inline;
+      position: absolute;
       font-weight: 300;
       color: var(--accent);
       animation: blink-caret 0.65s step-end infinite;
@@ -649,16 +653,55 @@
     /* ---------- Responsive ---------- */
     @media (max-width: 900px) {
       nav.top {
-        padding: 20px 24px;
+        padding: 12px 20px;
+        display: grid;
         grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 6px 12px;
+        align-items: start;
       }
 
       .brand .l2 {
-        display: none; /* 移动端只保留 Lyra，不显示 Solo Builder 后缀以防止和右侧按钮重叠 */
+        display: block; /* 恢复显示并作为第二行展示，极显精致 */
+        font-size: 16px;
+        opacity: 0.8;
       }
 
       .socials {
-        display: none;
+        display: flex !important; /* 移动端强行展示小 icon */
+        grid-row: 1;
+        grid-column: 1 / span 2;
+        justify-content: flex-end; /* 靠最右上角摆放 */
+        gap: 12px;
+        margin: 0;
+        transform: none;
+      }
+
+      .socials a {
+        width: 14px;
+        height: 14px;
+        opacity: 0.5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .socials svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .navtoggle {
+        grid-row: 2;
+        grid-column: 2;
+        align-self: start;
+        margin-top: 4px; /* 精准对齐“Lyra”的首行字高顶部 */
+      }
+
+      .navtoggle button {
+        font-size: 9px;
+        padding: 4px 10px;
+        letter-spacing: 0.08em;
       }
 
       .hero {
@@ -953,7 +996,7 @@
       c.addEventListener('click', (e) => e.preventDefault());
     });
 
-    // Typewriter effect for tagline (Non-shifting dynamic visibility placeholder)
+    // Typewriter effect for tagline (Zero-shift visibility placeholder)
     (() => {
       const tagEl = document.querySelector('.meta .tag');
       if (!tagEl) return;
@@ -961,39 +1004,37 @@
       const line1Text = "Shipping experiments";
       const line2Text = "at midnight";
 
-      // 静态双行排版占位，防止打字时页面抖动
+      // cursor 在 .visible 内部用 absolute 定位，不占布局宽度
       tagEl.innerHTML = `
         <div class="line" style="text-align: right; display: block; min-height: 1.2em; width: 100%;">
-          <span class="visible"></span><span class="cursor"></span><span class="hidden" style="visibility: hidden;">${line1Text}</span>
+          <span class="visible"><span class="vtext"></span><span class="cursor"></span></span><span class="hidden" style="visibility: hidden;">${line1Text}</span>
         </div>
         <div class="line" style="text-align: right; display: block; min-height: 1.2em; width: 100%;">
-          <span class="visible"></span><span class="cursor"></span><span class="hidden" style="visibility: hidden;">${line2Text}</span>
+          <span class="visible"><span class="vtext"></span><span class="cursor"></span></span><span class="hidden" style="visibility: hidden;">${line2Text}</span>
         </div>
       `;
 
-      const lines = tagEl.querySelectorAll('.line');
-      const l1Visible = lines[0].querySelector('.visible');
-      const l1Cursor = lines[0].querySelector('.cursor');
-      const l1Hidden = lines[0].querySelector('.hidden');
+      const lineEls = tagEl.querySelectorAll('.line');
+      const l1VText = lineEls[0].querySelector('.vtext');
+      const l1Cursor = lineEls[0].querySelector('.cursor');
+      const l1Hidden = lineEls[0].querySelector('.hidden');
 
-      const l2Visible = lines[1].querySelector('.visible');
-      const l2Cursor = lines[1].querySelector('.cursor');
-      const l2Hidden = lines[1].querySelector('.hidden');
+      const l2VText = lineEls[1].querySelector('.vtext');
+      const l2Cursor = lineEls[1].querySelector('.cursor');
+      const l2Hidden = lineEls[1].querySelector('.hidden');
 
       let index = 0;
-      const speed = 40; //Snappy & dynamic
+      const speed = 40;
 
-      // 第一行光标初始化为终端下划线
       l1Cursor.textContent = '_';
 
       function typeLine1() {
         if (index < line1Text.length) {
-          l1Visible.textContent += line1Text[index];
+          l1VText.textContent += line1Text[index];
           l1Hidden.textContent = line1Text.substring(index + 1);
           index++;
           setTimeout(typeLine1, speed);
         } else {
-          // 第一行打完，光标无缝转移到第二行开头
           l1Cursor.textContent = '';
           index = 0;
           l2Cursor.textContent = '_';
@@ -1003,15 +1044,14 @@
 
       function typeLine2() {
         if (index < line2Text.length) {
-          l2Visible.textContent += line2Text[index];
+          l2VText.textContent += line2Text[index];
           l2Hidden.textContent = line2Text.substring(index + 1);
           index++;
           setTimeout(typeLine2, speed);
         }
-        // 打完后光标不消失，停留在末尾永远闪烁！
+        // 打完后光标停留在末尾永远闪烁
       }
 
-      // 等待首屏渲染完毕后以极具动感的节奏开启打字
       setTimeout(typeLine1, 600);
     })();
   </script>
