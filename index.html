@@ -632,6 +632,20 @@
       opacity: 1;
     }
 
+    /* ---------- Typewriter cursor ---------- */
+    @keyframes blink-caret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .tag.typing::after {
+      content: '|';
+      display: inline-block;
+      margin-left: 2px;
+      animation: blink-caret 0.6s step-end infinite;
+      font-weight: 300;
+    }
+
     /* ---------- Responsive ---------- */
     @media (max-width: 900px) {
       nav.top {
@@ -938,6 +952,36 @@
     document.querySelectorAll('.card.no-link').forEach(c => {
       c.addEventListener('click', (e) => e.preventDefault());
     });
+
+    // Typewriter effect for tagline
+    (() => {
+      const tagEl = document.querySelector('.meta .tag');
+      if (!tagEl) return;
+      const lines = ['Shipping experiments', 'at midnight.'];
+      const full = lines.join('\n');
+      // Clear content and mark as typing
+      tagEl.innerHTML = '';
+      tagEl.classList.add('typing');
+      let i = 0;
+      const speed = 45; // ms per character — snappy
+      function type() {
+        if (i < full.length) {
+          const ch = full[i];
+          if (ch === '\n') {
+            tagEl.innerHTML += '<br>';
+          } else {
+            tagEl.append(ch);
+          }
+          i++;
+          setTimeout(type, speed);
+        } else {
+          // Done — remove cursor after a short pause
+          setTimeout(() => tagEl.classList.remove('typing'), 800);
+        }
+      }
+      // Small initial delay so page settles first
+      setTimeout(type, 600);
+    })();
   </script>
 
 </body>
