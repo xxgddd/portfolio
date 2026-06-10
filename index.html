@@ -827,6 +827,129 @@
       }
     }
     
+  
+    /* Stickers */
+    .stickers-container {
+      max-width: 1080px;
+      margin: 40px auto 60px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      padding: 20px;
+    }
+    @media (max-width: 900px) {
+      .stickers-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+    }
+    @media (max-width: 500px) {
+      .stickers-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+    .sticker {
+      background: var(--paper);
+      padding: 24px 16px 28px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.05),
+        0 12px 20px -10px rgba(60, 40, 10, 0.15),
+        0 6px 10px -5px rgba(60, 40, 10, 0.1);
+      transition: transform 0.4s cubic-bezier(.2, .8, .2, 1.05), filter 0.3s;
+      transform-origin: 50% 10%;
+      cursor: pointer;
+    }
+    .sticker:hover {
+      transform: translateY(-8px) rotate(0deg) scale(1.05) !important;
+      z-index: 5;
+      filter: drop-shadow(0 15px 15px rgba(60, 40, 10, 0.15));
+    }
+    .sticker .emoji {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+    .sticker .title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 24px;
+      font-weight: 400;
+      margin: 4px 0;
+      line-height: 1.1;
+    }
+    .sticker .desc {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      opacity: 0.85;
+      margin-top: 6px;
+    }
+    .sticker::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      width: 60px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.45);
+      transform: translateX(-50%) rotate(var(--tape-rot, -1deg));
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+    .sticker.fruit {
+      background: linear-gradient(160deg, #FFF0F0 0%, #FFD6D6 100%);
+      color: #611A1A;
+      --tape-rot: -2deg;
+    }
+    .sticker.choir {
+      background: linear-gradient(160deg, #F0F5FF 0%, #D6E4FF 100%);
+      color: #1A3061;
+      --tape-rot: 3deg;
+    }
+    .sticker.tree {
+      background: linear-gradient(160deg, #F0FFF9 0%, #D6FFE9 100%);
+      color: #1A613F;
+      --tape-rot: -1deg;
+    }
+    .sticker.magic {
+      background: linear-gradient(160deg, #FFFFF0 0%, #FFFED6 100%);
+      color: #615A1A;
+      --tape-rot: 2deg;
+    }
+    /* Rotation stagger */
+    .stickers-container > *:nth-child(1) { transform: rotate(-3deg); }
+    .stickers-container > *:nth-child(2) { transform: rotate(2deg); }
+    .stickers-container > *:nth-child(3) { transform: rotate(-1.5deg); }
+    .stickers-container > *:nth-child(4) { transform: rotate(3deg); }
+
+    /* Ext Arrow for stickers */
+    .sticker .ext-arrow {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.85);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .sticker:hover .ext-arrow {
+      opacity: 1;
+      transform: translate(-1px, 1px);
+    }
+
   </style>
 </head>
 
@@ -899,6 +1022,34 @@
 
   <!-- ============ WORK ============ -->
   <section class="work" id="work" data-screen-label="02 Work">
+    <!-- Stickers for Mini Interactive Games -->
+    <div class="stickers-container">
+      <a class="sticker fruit" href="https://fruit.eveonecat.uk/" target="_blank" rel="noopener">
+        <span class="ext-arrow">↗</span>
+        <span class="emoji">🍎</span>
+        <span class="title">Fruit Ninja</span>
+        <span class="desc">切水果不要切到工资！</span>
+      </a>
+      <a class="sticker choir" href="https://choir.eveonecat.uk/" target="_blank" rel="noopener">
+        <span class="ext-arrow">↗</span>
+        <span class="emoji">🎵</span>
+        <span class="title">Choir Game</span>
+        <span class="desc">声控张嘴大合唱！</span>
+      </a>
+      <a class="sticker tree" href="https://christmastree.eveonecat.uk/" target="_blank" rel="noopener">
+        <span class="ext-arrow">↗</span>
+        <span class="emoji">🎄</span>
+        <span class="title">Christmas Tree</span>
+        <span class="desc">豪华手势粒子圣诞树！</span>
+      </a>
+      <a class="sticker magic" href="https://magic.eveonecat.uk/" target="_blank" rel="noopener">
+        <span class="ext-arrow">↗</span>
+        <span class="emoji">🔮</span>
+        <span class="title">Magic Gesture</span>
+        <span class="desc">手势魔术师粒子形态！</span>
+      </a>
+    </div>
+
     <h2>Work I'm <em>Proud</em> Of.</h2>
 
     <div class="cards">
